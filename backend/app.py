@@ -5,11 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.secret_key = 'secretkey'
 
-# Make sure this is exactly one continuous string, with no extra spaces or hidden characters.
-app.config["MONGO_URI"] = (
-    "mongodb://mbhagtw:MD0gjMSQDvrPGpib@ac-12345.mongodb.net:27017,"
-    "ac-67890.mongodb.net:27017/loginapp?"
-    "ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority"
+app.config["MONGO_URI"] = ("mongodb+srv://mbhagatw:MD0gjMSQDvrPGpib@cluster0.rjnq2ff.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
 )
 mongo = PyMongo(app)
 
@@ -28,15 +25,23 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
         
+        # Check if a user with this email already exists
         existing_user = mongo.db.users.find_one({"email": email})
         if existing_user:
             flash("Email already exists. Try logging in.")
             return redirect(url_for('register'))
-
+        
+        # Hash the password for secure storage
         hashed_password = generate_password_hash(password)
-        mongo.db.users.insert_one({"email": email, "password": hashed_password})
-        flash("Registration successful! Please log in.")
-        return redirect(url_for('login'))
+        
+        # Insert the new user into the database
+        mongo.db.users.insert_one({
+            "email": email,
+            "password": hashed_password
+        })
+        
+        # Render the confirmation page
+        return render_template('register_confirmation.html')
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -63,3 +68,4 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
