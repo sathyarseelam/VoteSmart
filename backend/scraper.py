@@ -7,8 +7,6 @@ import google.generativeai as genai
 from typing import List, Dict
 from bs4 import Tag
 from urllib.parse import urljoin
-import json
-
 
 
 load_dotenv()
@@ -84,19 +82,3 @@ def fetch_prop_details(url: str) -> str:
     why  = gather_after("h-why-is-it-on-the-ballot")
 
     return "\n\n".join(what + [""] + why)
-
-
-
-if __name__ == "__main__":
-    # 1) Load & parse the main page
-    soup = fetch_main_page()
-
-    # 2) Find all target props
-    props = extract_prop_blocks(soup)
-
-    # 3) For each one, fetch the detailed text
-    for p in props:
-        p["details"] = fetch_prop_details(p["url"])
-
-    # 4) Print the entire list as pretty JSON
-    print(json.dumps(props, indent=2, ensure_ascii=False))

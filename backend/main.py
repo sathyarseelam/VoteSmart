@@ -1,17 +1,16 @@
-import uvicorn 
+import os
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List
-from models import UserData, Proposition
+from typing import List, Dict, Optional
+from scraper import fetch_main_page, extract_prop_blocks, fetch_prop_details
+from gemini import simplify_description, simplify_paragraph, people_affected
 
 app = FastAPI()
 
-origins = [ 
-    "http://localhost:8080",
-    # other APIs
-]
-
+# Allow CORS for your frontend (adjust origins as necessary)
+origins = ["http://localhost:8080"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -20,40 +19,94 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-memory_db = {
-    "user_data": [],        # will hold dicts matching UserData
-    "propositions": []      # will hold dicts matching Proposition
-}
+# In-memory cache for scraped propositions
+propositions_cache: List[Dict] = []
 
 
-# --- USER DATA endpoints ---
+# --- Data Models ---
+class Proposition(BaseModel):
+    number: str
+    title: str
+    url: str
+    details: Optional[str] = None
+    simplified_description: Optional[str] = None
+    simplified_paragraph: Optional[str] = None
+    affected_people: Optional[str] 
 
-# Get all user data entries
-@app.get("/user_data", response_model=List[UserData])
-def get_user_data():
-    return memory_db["user_data"]
 
-# Create a new user data entry
-@app.post("/user_data", response_model=UserData, status_code=201)
-def create_user_data(entry: UserData):
-    memory_db["user_data"].append(entry.model_dump())
-    return entry
+# --- Endpoints ---
 
-# Get a single entry by index (or by some id if you add one)
-@app.get("/user_data/{index}", response_model=UserData)
-def read_user_data(index: int):
+@app.get("/scrape-propositions", response_model=List[Proposition])
+def get_scraped_propositions():
+    """
+    Scrape the propositions from the target website.
+    For each proposition, fetch detailed text.
+    """
     try:
-        return memory_db["user_data"][index]
-    except IndexError:
-        raise HTTPException(status_code=404, detail="Entry not found")
+        soup = fetch_main_page()  # Load and parse the main page
+        props = extract_prop_blocks(soup)  # Extract proposition blocks
 
-# --- PROPOSITION endpoints ---
+        # For each prop, fetch the details and add to the dictionary.
+        for prop in props:
+            prop["details"] = fetch_prop_details(prop["url"])
+        # Update cache
+        global propositions_cache
+        propositions_cache = props
+        return props
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error scraping propositions: {str(e)}")
 
-@app.get("/propositions", response_model=List[Proposition])
-def get_propositions():
-    return memory_db["propositions"]
 
-@app.post("/propositions", response_model=Proposition, status_code=201)
-def create_proposition(prop: Proposition):
-    memory_db["propositions"].append(prop.dict())
-    return prop
+@app.get("/simplify-propositions", response_model=List[Proposition])
+def get_simplified_propositions():
+    """
+    Use Gemini to simplify the proposition details.
+    Returns both the simplified description (short version) and simplified paragraph (longer version).
+    Ensure that the scraping endpoint has been called first or that propositions_cache is populated.
+    """
+    if not propositions_cache:
+        raise HTTPException(status_code=404, detail="No propositions have been scraped yet. Call /scrape-propositions first.")
+    
+    simplified_props = []
+    for prop in propositions_cache:
+        details = prop.get("details", "")
+        # Use Gemini API functions to simplify the details.
+        try:
+            simple_desc = simplify_description(details)
+            simple_para = simplify_paragraph(details)
+            people_aff = people_affected(details)
+        except Exception as e:
+            simple_desc = f"Error in simplification: {str(e)}"
+            simple_para = f"Error in simplification: {str(e)}"
+            people_aff = f"Error in formulating: {str(e)}"
+        
+        # Add the simplified texts to the proposition data.
+        prop["simplified_description"] = simple_desc
+        prop["simplified_paragraph"] = simple_para
+        prop["affected_people"] = people_aff
+        simplified_props.append(prop)
+    
+    return simplified_props
+
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Proposition API!"}
+
+
+# --- MAIN SECTION ---
+if __name__ == "__main__":
+    # Optionally, you can pre-scrape propositions here for testing purposes.
+    try:
+        soup = fetch_main_page()
+        props = extract_prop_blocks(soup)
+        for prop in props:
+            prop["details"] = fetch_prop_details(prop["url"])
+        propositions_cache = props
+        print("Pre-scraped propositions:")
+        for p in propositions_cache:
+            print(p["number"], p["title"])
+    except Exception as e:
+        print("Error pre-scraping propositions:", e)
+    
+    uvicorn.run(app, host="0.0.0.0", port=8000)
