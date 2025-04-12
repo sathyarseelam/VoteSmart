@@ -11,6 +11,9 @@ dist/
 # Environment variables
 .env
 
+# Virtual environment
+venv/
+
 # IDEs and editors
 .vscode/
 .idea/

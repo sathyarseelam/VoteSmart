@@ -82,18 +82,3 @@ def fetch_prop_details(url: str) -> str:
     why  = gather_after("h-why-is-it-on-the-ballot")
 
     return "\n\n".join(what + [""] + why)
-
-if __name__ == "__main__":
-    # 1) Fetch the main page and extract blocks
-    soup = fetch_main_page()
-    blocks = extract_prop_blocks(soup)
-    print(f"✅ Found {len(blocks)} target props:")
-    print([b["number"] for b in blocks], "\n")
-
-    # 2) For each prop, fetch and print the full detail
-    for blk in blocks:
-        print(f"--- {blk['number']} — {blk['title']} ---\n")
-        detail = fetch_prop_details(blk["url"])
-        print("🔍 Full detail text:\n")
-        print(detail)          # print everything, including newlines
-        print("\n" + "-"*80 + "\n")
