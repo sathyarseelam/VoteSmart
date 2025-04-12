@@ -8,3 +8,5 @@ python-dotenv          # load .env
 google-generativeai  # Gemini (Vertex AI) client
 tiktoken               # tokenizer for chunking
 pydantic               # settings & data validation
+Flask                  # to make app
+werkzeug.security      # to hash user passwords
