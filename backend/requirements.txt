@@ -1,0 +1,11 @@
+fastapi             # Web framework for building APIs
+uvicorn[standard]   # ASGI server to run FastAPI
+beautifulsoup4      # HTML parsing library for scraping
+requests            # HTTP client for fetching web pages
+pymongo             # Official MongoDB driver (synchronous)
+motor               # Async MongoDB driver (optional, for async services)
+dnspython           # Required by pymongo for mongodb+srv URIs
+python-dotenv       # Load environment variables from .env files
+google-cloud-aiplatform  # Google Vertex AI client (Gemini API)
+tiktoken            # Tokenizer (for chunking text)
+pydantic            # Data validation & settings management
