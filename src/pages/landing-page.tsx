@@ -47,9 +47,11 @@ const Index = () => {
               Make voting easier. Get personalized updates, track legislation, and compare candidates — all in one place.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-blue-600 hover:bg-blue-700 rounded-full py-6 px-8 flex items-center">
-                Create Account <ArrowRight className="ml-2" size={18} />
-              </Button>
+              <Link to="/registration">
+                <Button className="bg-blue-600 hover:bg-blue-700 rounded-full py-6 px-8 flex items-center">
+                  Create Account <ArrowRight className="ml-2" size={18} />
+                </Button>
+              </Link>
               <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50 rounded-full py-6 px-8">
                 Log In
               </Button>
@@ -216,9 +218,11 @@ const Index = () => {
       <section className="py-10 px-6 md:px-12 mb-10">
         <div className="max-w-5xl mx-auto bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl py-16 px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-8">Ready to become an informed voter?</h2>
-          <Button className="bg-white text-blue-600 hover:bg-gray-100 rounded-full py-6 px-8 flex items-center mx-auto">
-            Get Started Now <ArrowRight className="ml-2" size={18} />
-          </Button>
+          <Link to="/registration">
+            <Button className="bg-white text-blue-600 hover:bg-gray-100 rounded-full py-6 px-8 flex items-center mx-auto">
+              Get Started Now <ArrowRight className="ml-2" size={18} />
+            </Button>
+          </Link>
         </div>
       </section>
 
