@@ -1,1 +1,1 @@
-# 2025 Hackathon 
+# CruzHacks Hackathon 2025
