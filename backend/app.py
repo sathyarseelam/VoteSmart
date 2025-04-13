@@ -19,6 +19,8 @@ def index():
         "<a href='/login'>Login</a> | <a href='/register'>Register</a>"
     )
 
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     print(mongo)
@@ -67,10 +69,112 @@ def logout():
     flash("You have been logged out.")
     return redirect(url_for('index'))
 
+def init_profile_session():
+    if 'profile' not in session:
+        session['profile'] = {}
+
+# Step 1: First Name
+@app.route('/profile/step1', methods=['GET', 'POST'])
+def profile_step1():
+    if 'email' not in session:
+        flash("You need to log in to update your profile.")
+        return redirect(url_for('login'))
+    init_profile_session()
+    if request.method == 'POST':
+        session['profile']['first_name'] = request.form.get('first_name')
+        return redirect(url_for('profile_step2'))
+    return render_template('profile_step1.html')
+
+# Step 2: Last Name
+@app.route('/profile/step2', methods=['GET', 'POST'])
+def profile_step2():
+    if 'email' not in session:
+        flash("You need to log in to update your profile.")
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        session['profile']['last_name'] = request.form.get('last_name')
+        return redirect(url_for('profile_step3'))
+    return render_template('profile_step2.html')
+
+# Step 3: Birth Date
+@app.route('/profile/step3', methods=['GET', 'POST'])
+def profile_step3():
+    if 'email' not in session:
+        flash("You need to log in to update your profile.")
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        # Assume input in format YYYY-MM-DD.
+        session['profile']['birth_date'] = request.form.get('birth_date')
+        return redirect(url_for('profile_step4'))
+    return render_template('profile_step3.html')
+
+# Step 4: Gender
+@app.route('/profile/step4', methods=['GET', 'POST'])
+def profile_step4():
+    if 'email' not in session:
+        flash("You need to log in to update your profile.")
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        session['profile']['gender'] = request.form.get('gender')
+        return redirect(url_for('profile_step5'))
+    return render_template('profile_step4.html')
+
+# Step 5: County
+@app.route('/profile/step5', methods=['GET', 'POST'])
+def profile_step5():
+    if 'email' not in session:
+        flash("You need to log in to update your profile.")
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        session['profile']['county'] = request.form.get('county')
+        return redirect(url_for('profile_step6'))
+    return render_template('profile_step5.html')
+
+# Step 6: Income Bracket
+@app.route('/profile/step6', methods=['GET', 'POST'])
+def profile_step6():
+    if 'email' not in session:
+        flash("You need to log in to update your profile.")
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        session['profile']['income_bracket'] = request.form.get('income_bracket')
+        return redirect(url_for('profile_step7'))
+    return render_template('profile_step6.html')
+
+# Step 7: Family Size
+@app.route('/profile/step7', methods=['GET', 'POST'])
+def profile_step7():
+    if 'email' not in session:
+        flash("You need to log in to update your profile.")
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        session['profile']['family_size'] = request.form.get('family_size')
+        return redirect(url_for('profile_step8'))
+    return render_template('profile_step7.html')
+
+# Step 8: Race/Ethnicity and Final Submission
+@app.route('/profile/step8', methods=['GET', 'POST'])
+def profile_step8():
+    if 'email' not in session:
+        flash("You need to log in to update your profile.")
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        session['profile']['race_ethnicity'] = request.form.get('race_ethnicity')
+        
+        # Update the user document in MongoDB.
+        profile_data = session.get('profile', {})
+        mongo.db.users.update_one(
+            {"email": session['email']},
+            {"$set": profile_data}
+        )
+        # Clear temporary profile data.
+        session.pop('profile', None)
+        
+        flash("Profile updated successfully!")
+        return redirect(url_for('index'))
+    return render_template('profile_step8.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
 
     
-if __name__ == '__main__':
-    app.run(debug=True)
-
