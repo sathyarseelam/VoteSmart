@@ -3,6 +3,7 @@ uvicorn[standard]      # ASGI server
 beautifulsoup4         # HTML parsing
 requests               # HTTP client
 pymongo                # MongoDB driver
+flask_pymongo          # connects flask to pymongo
 dnspython              # for mongodb+srv URIs
 python-dotenv          # load .env
 google-generativeai  # Gemini (Vertex AI) client
