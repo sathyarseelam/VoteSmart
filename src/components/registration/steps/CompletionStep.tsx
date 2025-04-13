@@ -10,7 +10,7 @@ const CompletionStep = () => {
       </div>
       
       <h2 className="text-3xl font-bold mb-4 text-purple-600">You're all set!</h2>
-      <p className="text-gray-600 mb-4">Your VoteSmart account has been created</p>
+      <p className="text-gray-600 mb-4">Your VoteSmart account is created</p>
       
       <div className="mb-8 max-w-md mx-auto">
         <p className="text-center text-gray-800">

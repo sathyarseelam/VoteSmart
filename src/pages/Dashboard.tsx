@@ -147,171 +147,174 @@ const Dashboard = () => {
       </section>
 
       {/* Personalized Feed */}
-      <section className="py-8 px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-blue-700">Your Personalized Feed</h2>
-            
-            <div className="flex space-x-2 bg-white rounded-full p-1 border">
-              {["All", "Legislation", "Candidates", "Polls"].map((filter) => (
-                <button
-                  key={filter}
-                  className={`px-4 py-1 rounded-full text-sm ${
-                    feedFilter === filter
-                      ? "bg-blue-100 text-blue-700"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                  onClick={() => setFeedFilter(filter)}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Feed Item 1 */}
+    <section className="py-8 px-6 bg-gray-50">
+    <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-blue-700">Your Personalized Feed</h2>
+
+        <div className="flex space-x-2 bg-white rounded-full p-1 border">
+            {["Legislation", "Candidates", "Polls"].map((filter) => (
+            <button
+                key={filter}
+                className={`px-4 py-1 rounded-full text-sm ${
+                feedFilter === filter
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+                onClick={() => setFeedFilter(filter)}
+            >
+                {filter}
+            </button>
+            ))}
+        </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {feedFilter === "Legislation" && (
             <Card className="border rounded-lg overflow-hidden">
-              <CardContent className="p-6">
+            <CardContent className="p-6">
                 <div className="flex justify-between mb-4">
-                  <div className="bg-blue-100 rounded-lg p-3">
+                <div className="bg-blue-100 rounded-lg p-3">
                     <FileText size={24} className="text-blue-600" />
-                  </div>
-                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
-                    Legislation
-                  </span>
                 </div>
-                
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
+                    Legislation
+                </span>
+                </div>
+
                 <h3 className="text-xl font-bold mb-1">Infrastructure Bill H.R. 3684</h3>
                 <p className="text-gray-600 mb-4">Recently passed in the House</p>
                 <p className="text-gray-700 mb-4">
-                  This bill authorizes funds for highways, public transportation, and other infrastructure projects.
+                This bill authorizes funds for highways, public transportation, and other infrastructure projects.
                 </p>
-                
+
                 <div className="mb-4">
-                  <p className="text-sm text-gray-600 mb-1">Bias Analysis</p>
-                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <p className="text-sm text-gray-600 mb-1">Bias Analysis</p>
+                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-blue-400 via-gray-300 to-red-400"
-                      style={{ width: '100%' }}
+                    className="h-full bg-gradient-to-r from-blue-400 via-gray-300 to-red-400"
+                    style={{ width: '100%' }}
                     ></div>
-                  </div>
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                </div>
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
                     <span>Left-leaning</span>
                     <span>Neutral</span>
                     <span>Right-leaning</span>
-                  </div>
                 </div>
-                
+                </div>
+
                 <div className="flex items-center text-yellow-600 mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                  </svg>
-                  <span>2 misinformation flags</span>
+                </svg>
+                <span>2 misinformation flags</span>
                 </div>
-                
+
                 <Button variant="outline" className="w-full">
-                  View AI Summary
+                View More
                 </Button>
-              </CardContent>
+            </CardContent>
             </Card>
-            
-            {/* Feed Item 2 */}
+        )}
+
+        {feedFilter === "Candidates" && (
             <Card className="border rounded-lg overflow-hidden">
-              <CardContent className="p-6">
+            <CardContent className="p-6">
                 <div className="flex justify-between mb-4">
-                  <div className="bg-blue-100 rounded-lg p-3">
+                <div className="bg-blue-100 rounded-lg p-3">
                     <Users size={24} className="text-blue-600" />
-                  </div>
-                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
-                    Candidates
-                  </span>
                 </div>
-                
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
+                    Candidates
+                </span>
+                </div>
+
                 <h3 className="text-xl font-bold mb-1">Sarah Johnson vs. Michael Chen</h3>
                 <p className="text-gray-600 mb-4">Senate Race Comparison</p>
-                
+
                 <div className="flex justify-between mb-4">
-                  <div className="text-center">
+                <div className="text-center">
                     <div className="inline-block w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-1">
-                      <span className="text-blue-600 font-bold">65%</span>
+                    <span className="text-blue-600 font-bold">65%</span>
                     </div>
                     <p className="text-gray-700">Johnson</p>
-                  </div>
-                  <div className="text-center">
+                </div>
+                <div className="text-center">
                     <div className="inline-block w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-1">
-                      <span className="text-gray-600 font-bold">35%</span>
+                    <span className="text-gray-600 font-bold">35%</span>
                     </div>
                     <p className="text-gray-700">Chen</p>
-                  </div>
                 </div>
-                
+                </div>
+
                 <div className="mb-4">
-                  <p className="text-sm text-gray-600 mb-2">Key Policy Differences</p>
-                  <p className="text-gray-700">Healthcare, Climate Change, Education</p>
+                <p className="text-sm text-gray-600 mb-2">Key Policy Differences</p>
+                <p className="text-gray-700">Healthcare, Climate Change, Education</p>
                 </div>
-                
+
                 <div className="flex items-center text-gray-700 mb-4">
-                  <TrendingUp size={16} className="mr-2 text-blue-600" />
-                  <span>Johnson leading in recent polls</span>
+                <TrendingUp size={16} className="mr-2 text-blue-600" />
+                <span>Johnson leading in recent polls</span>
                 </div>
-                
+
                 <Button variant="outline" className="w-full">
-                  Compare Candidates
+                Compare Candidates
                 </Button>
-              </CardContent>
+            </CardContent>
             </Card>
-            
-            {/* Feed Item 3 */}
+        )}
+
+        {feedFilter === "Polls" && (
             <Card className="border rounded-lg overflow-hidden">
-              <CardContent className="p-6">
+            <CardContent className="p-6">
                 <div className="flex justify-between mb-4">
-                  <div className="bg-blue-100 rounded-lg p-3">
+                <div className="bg-blue-100 rounded-lg p-3">
                     <BarChart3 size={24} className="text-blue-600" />
-                  </div>
-                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
-                    Polls
-                  </span>
                 </div>
-                
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">
+                    Polls
+                </span>
+                </div>
+
                 <h3 className="text-xl font-bold mb-1">Downtown Polling Station</h3>
                 <p className="text-gray-600 mb-4">Live Turnout Data</p>
-                
+
                 <div className="flex justify-between items-end mb-4">
-                  <div>
+                <div>
                     <p className="text-3xl font-bold">42%</p>
                     <p className="text-gray-600 text-sm">Current Turnout</p>
-                  </div>
-                  <div className="text-right">
+                </div>
+                <div className="text-right">
                     <p className="text-green-600 font-bold">+12%</p>
                     <p className="text-gray-600 text-sm">vs. Last Election</p>
-                  </div>
                 </div>
-                
+                </div>
+
                 <div className="mb-2">
-                  <p className="text-sm text-gray-600 mb-1">Wait Time</p>
-                  <p className="text-gray-700">Approximately 15 minutes</p>
+                <p className="text-sm text-gray-600 mb-1">Wait Time</p>
+                <p className="text-gray-700">Approximately 15 minutes</p>
                 </div>
-                
+
                 <div className="flex items-center text-gray-700 mb-4">
-                  <Clock size={16} className="mr-2" />
-                  <span>Busiest between 5-7pm</span>
+                <Clock size={16} className="mr-2" />
+                <span>Busiest between 5-7pm</span>
                 </div>
-                
+
                 <Button variant="outline" className="w-full">
-                  View Live Map
+                View Live Map
                 </Button>
-              </CardContent>
+            </CardContent>
             </Card>
-          </div>
-          
-          <div className="flex justify-center mt-8">
-            <Button variant="outline" className="flex items-center">
-              Load More <ArrowRight size={16} className="ml-1" />
-            </Button>
-          </div>
+        )}
         </div>
-      </section>
+
+        <div className="flex justify-center mt-8">
+        <Button variant="outline" className="flex items-center">
+            Load More <ArrowRight size={16} className="ml-1" />
+        </Button>
+        </div>
+    </div>
+    </section>
 
       {/* Quick Actions */}
       <section className="py-8 px-6">

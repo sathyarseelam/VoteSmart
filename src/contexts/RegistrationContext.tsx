@@ -15,6 +15,7 @@ interface RegistrationData {
   familySize: string;
   raceEthnicity: string;
   policyInterests: string[];
+  policyStances: Record<string, string>;
   benefits: string[];
   votingPreference: string;
 }
@@ -34,6 +35,7 @@ const initialRegistrationData: RegistrationData = {
   familySize: "",
   raceEthnicity: "",
   policyInterests: [],
+  policyStances: {},
   benefits: [],
   votingPreference: "",
 };

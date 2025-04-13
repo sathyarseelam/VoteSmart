@@ -53,7 +53,7 @@ const BenefitsStep = () => {
         ))}
       </div>
       
-      <NavigationButtons showSkip={true} nextLabel="Complete Registration" />
+      <NavigationButtons showSkip={true} nextLabel="Continue" />
     </div>
   );
 };
