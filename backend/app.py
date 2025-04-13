@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.secret_key = 'secretkey'
 
-app.config["MONGO_URI"] = ("mongodb+srv://mbhagatw:MD0gjMSQDvrPGpib@cluster0.rjnq2ff.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+app.config["MONGO_URI"] = ("mongodb+srv://mbhagatw:878298347235@cluster0.rjnq2ff.mongodb.net/loginapp?retryWrites=true&w=majority&appName=Cluster0"
 
 )
 mongo = PyMongo(app)
@@ -21,6 +21,7 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    print(mongo)
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -66,6 +67,10 @@ def logout():
     flash("You have been logged out.")
     return redirect(url_for('index'))
 
+if __name__ == '__main__':
+    app.run(debug=True)
+
+    
 if __name__ == '__main__':
     app.run(debug=True)
 
