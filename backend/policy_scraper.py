@@ -3,7 +3,6 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-import google.generativeai as genai
 from typing import List, Dict
 from bs4 import Tag
 from urllib.parse import urljoin

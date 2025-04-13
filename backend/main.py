@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Optional
-from scraper import fetch_main_page, extract_prop_blocks, fetch_prop_details
+from backend.policy_scraper import fetch_main_page, extract_prop_blocks, fetch_prop_details
 from gemini import simplify_description, simplify_paragraph, people_affected
 
 app = FastAPI()
